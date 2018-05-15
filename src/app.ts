@@ -12,17 +12,17 @@ export class AccountsService {
     this.repository = repo;
     this.aggregates = {};
   }
-  getRepository() {
+  public getRepository() {
     return this.repository;
   }
-  eventHandler = (event: AccountEvent) => {
+  public eventHandler = (event: AccountEvent) => {
     this.repository.append(event);
   };
-  reset = () => {
+  public reset = () => {
     this.aggregates = {};
     this.repository.reset();
   };
-  createAccount = (account: string) => {
+  public createAccount = (account: string) => {
     if (!this.aggregates[account]) {
       this.aggregates[account] = new AccountAggregate(
         this.eventHandler,
@@ -33,17 +33,17 @@ export class AccountsService {
       throw "Account already exists";
     }
   };
-  undo = (account: string, numberOfTransactions: number):  => {
+  public undo = (account: string, numberOfTransactions: number) => {
     this.repository.undo({ [account]: 0 }, numberOfTransactions);
   };
-  makeDeposit = (account: string, amount: number) => {
+  public makeDeposit = (account: string, amount: number) => {
     if (this.aggregates[account]) {
       this.aggregates[account].makeAccountDeposit(amount);
     } else {
       throw "Account does not exists";
     }
   };
-  makeWithDraw = (account: string, amount: number) => {
+  public makeWithDraw = (account: string, amount: number) => {
     if (this.aggregates[account]) {
       this.aggregates[account].makeAccountWithdraw(amount);
     } else {
